@@ -4,6 +4,6 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry kind="lib" path="engine.jar"/>
+	<classpathentry kind="lib" path="D:/Documents/Documents/java/Simple-GL-Android-Engine/engine.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

@@ -4,7 +4,10 @@ import com.simpleglengine.SimpleGLEngineActivity;
 import com.simpleglengine.engine.handler.PhysicsHandler;
 import com.simpleglengine.engine.opengl.Texture;
 import com.simpleglengine.entity.scene.Scene;
+import com.simpleglengine.entity.scene.background.ColorBackground;
+import com.simpleglengine.entity.scene.background.TextureBackground;
 import com.simpleglengine.entity.sprite.Sprite;
+import com.simpleglengine.entity.sprite.SpriteBatch;
 import com.simpleglengine.tools.BitmapTools;
 
 import android.app.Activity;
@@ -17,12 +20,15 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	private Texture mTexture;
 	private Sprite mSprite;
 	
+	private Texture mBackground;
 	
 	@Override
 	public void onLoadRessources() {
 		Bitmap bmp = BitmapTools.loadBitmapFromRessource(R.drawable.heros, Color.rgb(255, 0, 255));		
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bmp);
 		
+		Bitmap bmp2 = BitmapTools.loadBitmapFromRessource(R.drawable.back);
+		this.mBackground = getTextureManager().loadTextureRegionFromBitmap(bmp2, 0, 0, 1024, 512);
 	}
 	
 	@Override
@@ -36,11 +42,30 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		
 		PhysicsHandler physicsHandler = new PhysicsHandler(mSprite);
 		physicsHandler.setVelocityX(100);
-		physicsHandler.setAngularVelocity(1000);
+		physicsHandler.setAngularVelocity(100);		
 		physicsHandler.setVelocityY(25);
-		mSprite.setPhysicsHandler(physicsHandler);
+		mSprite.setPhysicsHandler(physicsHandler);		
 		
-		scene.attachChild(mSprite);		
+		scene.attachChild(mSprite);
+		
+		Sprite mSprite2 = new Sprite(this.mTexture, 500, 200);
+		scene.attachChild(mSprite2);
+		
+		/*
+		float [] x = {0,30,100};
+		float [] y = {0,30,100};
+		SpriteBatch sb = new SpriteBatch(mTexture, x, y);
+		
+		//scene.attachChild(sb);
+		//scene.setBackground(new ColorBackground(0.8f, 0.5f, 0.1f, 1.0f));
+		scene.setBackground(sb);
+		*/
+		TextureBackground tb = new TextureBackground(this.mTexture, 10, 854, 10, 480, true, true);
+		scene.setBackground(tb);
+		TextureBackground tb2 = new TextureBackground(this.mBackground, 0, 1024, 0, 512, true, true);
+		//scene.setBackground(tb2);
+		
+		scene.setScale(4);
 		
 		return scene;
 	}
