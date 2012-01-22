@@ -27,8 +27,8 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		Bitmap bmp = BitmapTools.loadBitmapFromRessource(R.drawable.heros, Color.rgb(255, 0, 255));		
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bmp);
 		
-		Bitmap bmp2 = BitmapTools.loadBitmapFromRessource(R.drawable.back);
-		this.mBackground = getTextureManager().loadTextureRegionFromBitmap(bmp2, 0, 0, 1024, 512);
+		Bitmap bmp2 = BitmapTools.loadBitmapFromRessource(R.drawable.logo);
+		this.mBackground = getTextureManager().loadTextureRegionFromBitmap(bmp2, 0, 0, 256, 256);
 	}
 	
 	@Override
@@ -42,13 +42,21 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		
 		PhysicsHandler physicsHandler = new PhysicsHandler(mSprite);
 		physicsHandler.setVelocityX(100);
-		physicsHandler.setAngularVelocity(100);		
+		//physicsHandler.setAngularVelocity(100);		
 		physicsHandler.setVelocityY(25);
 		mSprite.setPhysicsHandler(physicsHandler);		
 		
 		scene.attachChild(mSprite);
 		
 		Sprite mSprite2 = new Sprite(this.mTexture, 500, 200);
+		
+		
+		PhysicsHandler physicsHandler2 = new PhysicsHandler(mSprite2);
+		physicsHandler2.setVelocityX(-100);
+		physicsHandler2.setAngularVelocity(-100);		
+		physicsHandler2.setVelocityY(-5);
+		mSprite2.setPhysicsHandler(physicsHandler2);	
+		
 		scene.attachChild(mSprite2);
 		
 		/*
@@ -61,9 +69,9 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		scene.setBackground(sb);
 		*/
 		TextureBackground tb = new TextureBackground(this.mTexture, 10, 854, 10, 480, true, true);
-		scene.setBackground(tb);
+		//scene.setBackground(tb);
 		TextureBackground tb2 = new TextureBackground(this.mBackground, 0, 1024, 0, 512, true, true);
-		//scene.setBackground(tb2);
+		scene.setBackground(tb2);
 		
 		scene.setScale(4);
 		
