@@ -69,9 +69,9 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		scene.setBackground(sb);
 		*/
 		TextureBackground tb = new TextureBackground(this.mTexture, 10, 854, 10, 480, true, true);
-		//scene.setBackground(tb);
+		scene.setBackground(tb);
 		TextureBackground tb2 = new TextureBackground(this.mBackground, 0, 1024, 0, 512, true, true);
-		scene.setBackground(tb2);
+		//scene.setBackground(tb2);
 		
 		scene.setScale(4);
 		
