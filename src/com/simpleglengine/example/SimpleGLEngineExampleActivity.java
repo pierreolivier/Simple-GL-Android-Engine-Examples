@@ -13,6 +13,7 @@ import com.simpleglengine.tools.BitmapTools;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.opengl.Matrix;
 import android.os.Bundle;
 
 public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
@@ -20,15 +21,20 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	private Texture mTexture;
 	private Sprite mSprite;
 	
-	private Texture mBackground;
+	private Texture mBackgroundColor;
+	private Texture mBackgroundAnim;
 	
 	@Override
 	public void onLoadRessources() {
 		Bitmap bmp = BitmapTools.loadBitmapFromRessource(R.drawable.heros, Color.rgb(255, 0, 255));		
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bmp);
 		
-		Bitmap bmp2 = BitmapTools.loadBitmapFromRessource(R.drawable.logo);
-		this.mBackground = getTextureManager().loadTextureRegionFromBitmap(bmp2, 0, 0, 256, 256);
+		Bitmap backColor = BitmapTools.loadBitmapFromRessource(R.drawable.back_color);
+		this.mBackgroundColor = getTextureManager().loadTextureFromBitmap(backColor);
+		
+		Bitmap backAnim = BitmapTools.loadBitmapFromRessource(R.drawable.back);
+		this.mBackgroundAnim = getTextureManager().loadTextureFromBitmap(backAnim);
+		
 	}
 	
 	@Override
@@ -38,7 +44,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		this.mSprite = new Sprite(this.mTexture, 0, 0);
 		mSprite.setScale(2f);		
 		mSprite.setRotationCenter(32, 32);
-		mSprite.translate(10, 10);
+		//mSprite.translate(10, 10);
 		
 		PhysicsHandler physicsHandler = new PhysicsHandler(mSprite);
 		physicsHandler.setVelocityX(100);
@@ -46,17 +52,23 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		physicsHandler.setVelocityY(25);
 		mSprite.setPhysicsHandler(physicsHandler);		
 		
-		scene.attachChild(mSprite);
+		
 		
 		Sprite mSprite2 = new Sprite(this.mTexture, 500, 200);
 		
-		
 		PhysicsHandler physicsHandler2 = new PhysicsHandler(mSprite2);
-		physicsHandler2.setVelocityX(-100);
+		//physicsHandler2.setVelocityX(-100);
 		physicsHandler2.setAngularVelocity(-100);		
-		physicsHandler2.setVelocityY(-5);
+		//physicsHandler2.setVelocityY(-5);
 		mSprite2.setPhysicsHandler(physicsHandler2);	
 		
+		Sprite back = new Sprite(this.mBackgroundAnim, 0, (int) (480-1.5f*150));
+		scene.attachChild(back);
+		PhysicsHandler physicsHandler3 = new PhysicsHandler(back);
+		physicsHandler3.setVelocityX(+100);
+		back.setPhysicsHandler(physicsHandler3);
+		
+		scene.attachChild(mSprite);
 		scene.attachChild(mSprite2);
 		
 		/*
@@ -69,11 +81,12 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		scene.setBackground(sb);
 		*/
 		TextureBackground tb = new TextureBackground(this.mTexture, 10, 854, 10, 480, true, true);
-		scene.setBackground(tb);
-		TextureBackground tb2 = new TextureBackground(this.mBackground, 0, 1024, 0, 512, true, true);
-		//scene.setBackground(tb2);
+		//scene.setBackground(tb);
+		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 1024, 0, 512, true, true);
+		scene.setBackground(tb2);
 		
 		scene.setScale(4);
+		back.setScale(1.5f);
 		
 		return scene;
 	}
