@@ -30,10 +30,12 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bmp);
 		
 		Bitmap backColor = BitmapTools.loadBitmapFromRessource(R.drawable.back_color);
-		this.mBackgroundColor = getTextureManager().loadTextureFromBitmap(backColor);
+		//this.mBackgroundColor = getTextureManager().loadTextureFromBitmap(backColor);
+		this.mBackgroundColor = getTextureManager().loadTextureRegionFromBitmap(backColor, 0, 0, 512, 512);
 		
 		Bitmap backAnim = BitmapTools.loadBitmapFromRessource(R.drawable.back);
-		this.mBackgroundAnim = getTextureManager().loadTextureFromBitmap(backAnim);
+		//this.mBackgroundAnim = getTextureManager().loadTextureFromBitmap(backAnim);
+		this.mBackgroundAnim = getTextureManager().loadTextureRegionFromBitmap(backAnim, 0, 0, 512, 256);
 		
 	}
 	
@@ -68,6 +70,12 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		physicsHandler3.setVelocityX(+100);
 		back.setPhysicsHandler(physicsHandler3);
 		
+		Sprite back2 = new Sprite(this.mBackgroundAnim, -512, (int) (480-1.5f*150));
+		scene.attachChild(back2);
+		PhysicsHandler physicsHandler4 = new PhysicsHandler(back2);
+		physicsHandler4.setVelocityX(+100);
+		back2.setPhysicsHandler(physicsHandler4);
+		
 		scene.attachChild(mSprite);
 		scene.attachChild(mSprite2);
 		
@@ -87,6 +95,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		
 		scene.setScale(4);
 		back.setScale(1.5f);
+		back2.setScale(1.5f);
 		
 		return scene;
 	}
