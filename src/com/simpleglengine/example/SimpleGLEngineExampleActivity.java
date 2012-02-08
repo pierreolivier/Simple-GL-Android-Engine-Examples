@@ -4,6 +4,7 @@ import com.simpleglengine.SimpleGLEngineActivity;
 import com.simpleglengine.engine.handler.PhysicsHandler;
 import com.simpleglengine.engine.opengl.Texture;
 import com.simpleglengine.entity.scene.Scene;
+import com.simpleglengine.entity.scene.background.AutoParallaxBackground;
 import com.simpleglengine.entity.scene.background.ColorBackground;
 import com.simpleglengine.entity.scene.background.TextureBackground;
 import com.simpleglengine.entity.sprite.Sprite;
@@ -30,12 +31,10 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bmp);
 		
 		Bitmap backColor = BitmapTools.loadBitmapFromRessource(R.drawable.back_color);
-		//this.mBackgroundColor = getTextureManager().loadTextureFromBitmap(backColor);
-		this.mBackgroundColor = getTextureManager().loadTextureRegionFromBitmap(backColor, 0, 0, 512, 512);
+		this.mBackgroundColor = getTextureManager().loadTextureRegionFromBitmap(backColor, 0, 0, 1024, 512);
 		
 		Bitmap backAnim = BitmapTools.loadBitmapFromRessource(R.drawable.back);
-		//this.mBackgroundAnim = getTextureManager().loadTextureFromBitmap(backAnim);
-		this.mBackgroundAnim = getTextureManager().loadTextureRegionFromBitmap(backAnim, 0, 0, 512, 256);
+		this.mBackgroundAnim = getTextureManager().loadTextureRegionFromBitmap(backAnim, 0, 0, 1024, 256);
 		
 	}
 	
@@ -45,57 +44,24 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		
 		this.mSprite = new Sprite(this.mTexture, 0, 0);
 		mSprite.setScale(2f);		
-		mSprite.setRotationCenter(32, 32);
-		//mSprite.translate(10, 10);
-		
+		mSprite.setRotationCenter(32, 32);	
 		PhysicsHandler physicsHandler = new PhysicsHandler(mSprite);
-		physicsHandler.setVelocityX(100);
-		//physicsHandler.setAngularVelocity(100);		
+		physicsHandler.setVelocityX(100);		
 		physicsHandler.setVelocityY(25);
-		mSprite.setPhysicsHandler(physicsHandler);		
+		mSprite.setPhysicsHandler(physicsHandler);
+
 		
-		
-		
-		Sprite mSprite2 = new Sprite(this.mTexture, 500, 200);
-		
-		PhysicsHandler physicsHandler2 = new PhysicsHandler(mSprite2);
-		//physicsHandler2.setVelocityX(-100);
-		physicsHandler2.setAngularVelocity(-100);		
-		//physicsHandler2.setVelocityY(-5);
-		mSprite2.setPhysicsHandler(physicsHandler2);	
-		
-		Sprite back = new Sprite(this.mBackgroundAnim, 0, (int) (480-1.5f*150));
-		scene.attachChild(back);
-		PhysicsHandler physicsHandler3 = new PhysicsHandler(back);
-		physicsHandler3.setVelocityX(+100);
-		back.setPhysicsHandler(physicsHandler3);
-		
-		Sprite back2 = new Sprite(this.mBackgroundAnim, -512, (int) (480-1.5f*150));
-		scene.attachChild(back2);
-		PhysicsHandler physicsHandler4 = new PhysicsHandler(back2);
-		physicsHandler4.setVelocityX(+100);
-		back2.setPhysicsHandler(physicsHandler4);
-		
-		scene.attachChild(mSprite);
-		scene.attachChild(mSprite2);
-		
-		/*
-		float [] x = {0,30,100};
-		float [] y = {0,30,100};
-		SpriteBatch sb = new SpriteBatch(mTexture, x, y);
-		
-		//scene.attachChild(sb);
-		//scene.setBackground(new ColorBackground(0.8f, 0.5f, 0.1f, 1.0f));
-		scene.setBackground(sb);
-		*/
-		TextureBackground tb = new TextureBackground(this.mTexture, 10, 854, 10, 480, true, true);
-		//scene.setBackground(tb);
-		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 1024, 0, 512, true, true);
+		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);
 		scene.setBackground(tb2);
 		
+		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, -200);
+		
+		
+		scene.attachChild(apb);		
+		scene.attachChild(mSprite);		
+		
 		scene.setScale(4);
-		back.setScale(1.5f);
-		back2.setScale(1.5f);
+		apb.setScale(2.0f);
 		
 		return scene;
 	}
