@@ -81,7 +81,8 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		physicsHandler2.setAngularVelocity(-60);
 		as.setPhysicsHandler(physicsHandler2);
 		
-		Balance b = new Balance(mBalance, 515*2, 361);
+		Balance b = new Balance(mBalance, 0, 0);
+		apb.addFollower(b, 1031, 182);
 		
 		mFont.setSize(2);
 		Text t = new Text(mFont, "FPS: "+ 0, 0, 0) {
@@ -95,7 +96,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		scene.setBackground(apb);
 		
 		scene.attachChild(as);
-		scene.attachChild(b);
+		//scene.attachChild(b);
 		scene.attachChild(t);
 		scene.attachChild(mSprite);
 		

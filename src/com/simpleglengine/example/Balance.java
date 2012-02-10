@@ -13,10 +13,12 @@ public class Balance extends Sprite {
 				
 		this.setRotationCenter(40, 10);
 		
+		
 		physicsHandler2 = new PhysicsHandler(this);
 		physicsHandler2.setAngularVelocity(-150);
-		physicsHandler2.setVelocityX(SimpleGLEngineExampleActivity.SPEED);
+		//physicsHandler2.setVelocityX(SimpleGLEngineExampleActivity.SPEED);
 		this.setPhysicsHandler(physicsHandler2);
+		
 	}
 
 	@Override
@@ -24,8 +26,8 @@ public class Balance extends Sprite {
 		super.onUpdate(alpha);
 		
 		
-		if(getX()+getScaledWidth() < 0)
-			setX(1919);
+		//if(getX()+getScaledWidth() < 0)
+		//	setX(1919);
 		
 		if(getRotation() > 20)
 			physicsHandler2.setAngularVelocity(-150);
