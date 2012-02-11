@@ -21,6 +21,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.opengl.Matrix;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+
 
 public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	public static final float SPEED = -200.0f;
@@ -64,16 +67,33 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	
 	@Override
 	public Scene onLoadScene() {
-		Scene scene = new Scene();
+		final Scene scene = new Scene();
 		
 		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);		
 		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, SPEED);
 		apb.setTextureBackground(tb2);
 		
 		
-		Sprite mSprite = new Sprite(this.mTexture, 200, 200);
+		Sprite mSprite = new Sprite(this.mTexture, 200, 200) {
+			public boolean onTouch(MotionEvent event) {
+				Log.e("ddd", "sdsdqsdsdqsd");
+				return false;
+			}
+		};
 		
-		AnimatedSprite as = new AnimatedSprite(mBirds, 50, 450, 90.0f);
+		AnimatedSprite as = new AnimatedSprite(mBirds, 50, 450, 90.0f) {
+			public void onUpdate(float alpha) {
+				super.onUpdate(alpha);
+				final AnimatedSprite sprite = this;
+				if(this.getY() < 100) {
+					runOnUpdateThread(new Runnable() {
+						public void run() {
+							scene.detachChild(sprite);
+						}
+					});					
+				}
+			}
+		};
 		PhysicsHandler physicsHandler2 = new PhysicsHandler(as);
 		physicsHandler2.setVelocityX(200);		
 		physicsHandler2.setVelocityY(-20);
@@ -93,17 +113,16 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		};
 		
 		
+
 		scene.setBackground(apb);
 		
 		scene.attachChild(as);
-		//scene.attachChild(b);
 		scene.attachChild(t);
 		scene.attachChild(mSprite);
 		
 		scene.setScale(4);
 		apb.setScale(2.0f);
 		as.setScale(2.0f);
-		b.setScale(2.0f);
 		
 		return scene;
 	}
@@ -112,7 +131,6 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 	@Override
 	public void onLoadComplete() {
-		// TODO Auto-generated method stub
 		
 	}
 
