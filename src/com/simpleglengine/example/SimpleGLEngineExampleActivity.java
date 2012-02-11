@@ -3,6 +3,8 @@ package com.simpleglengine.example;
 import java.io.IOException;
 
 import com.simpleglengine.SimpleGLEngineActivity;
+import com.simpleglengine.audio.Music;
+import com.simpleglengine.audio.Sound;
 import com.simpleglengine.engine.handler.PhysicsHandler;
 import com.simpleglengine.engine.opengl.Font;
 import com.simpleglengine.engine.opengl.Texture;
@@ -35,6 +37,10 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	private Texture [] mBirds;	
 	private Texture mBalance;
 	private Font mFont;
+	
+	private Music mMusic;
+	private Sound mSound;
+	
 	@Override
 	public void onLoadRessources() {
 		Bitmap bmp = BitmapTools.loadBitmapFromRessource(R.drawable.heros, Color.rgb(255, 0, 255));		
@@ -56,6 +62,12 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		Bitmap balance = BitmapTools.loadBitmapFromRessource(R.drawable.balance);		
 		this.mBalance = getTextureManager().loadTextureFromBitmap(balance);
 		
+		try {
+			mMusic = getAudioManager().loadMusic(R.raw.music);
+			mSound = getAudioManager().loadSound(R.raw.perfect);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		
 		try {
 			mFont = getFontManager().createFont("Verdana.bff");
@@ -74,7 +86,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		apb.setTextureBackground(tb2);
 		
 		
-		Sprite mSprite = new Sprite(this.mTexture, 200, 200) {
+		Sprite mSprite = new Sprite(this.mTexture, -5, -5) {
 			public boolean onTouch(MotionEvent event) {
 				Log.e("ddd", "sdsdqsdsdqsd");
 				return false;
@@ -110,6 +122,10 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 				super.onUpdate(alpha);
 				this.setText("FPS: "+getFPS());
 			}
+			public boolean onTouch(MotionEvent event) {
+				Log.e("ddd", "fps");
+				return false;
+			}
 		};
 		
 		
@@ -124,6 +140,8 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		apb.setScale(2.0f);
 		as.setScale(2.0f);
 		
+		Log.e("", ""+t.collidesWith(mSprite));
+		
 		return scene;
 	}
 
@@ -131,6 +149,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 	@Override
 	public void onLoadComplete() {
+		mMusic.play();
 		
 	}
 
