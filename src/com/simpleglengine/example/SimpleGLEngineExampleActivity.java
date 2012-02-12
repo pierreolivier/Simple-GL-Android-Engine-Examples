@@ -6,6 +6,9 @@ import com.simpleglengine.SimpleGLEngineActivity;
 import com.simpleglengine.audio.Music;
 import com.simpleglengine.audio.Sound;
 import com.simpleglengine.engine.handler.PhysicsHandler;
+import com.simpleglengine.engine.handler.modifier.DoubleValueEntityModifier;
+import com.simpleglengine.engine.handler.modifier.ease.EaseBounceOut;
+import com.simpleglengine.engine.handler.modifier.ease.EaseLinear;
 import com.simpleglengine.engine.opengl.Font;
 import com.simpleglengine.engine.opengl.Texture;
 import com.simpleglengine.entity.scene.Scene;
@@ -92,6 +95,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 				return false;
 			}
 		};
+		mSprite.addEntityModifier(new DoubleValueEntityModifier(2, 200, 200, 0, 0, new EaseBounceOut()));
 		
 		AnimatedSprite as = new AnimatedSprite(mBirds, 50, 450, 90.0f) {
 			public void onUpdate(float alpha) {
@@ -149,7 +153,6 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 	@Override
 	public void onLoadComplete() {
-		mMusic.play();
 		
 	}
 
