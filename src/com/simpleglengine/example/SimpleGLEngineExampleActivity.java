@@ -11,10 +11,12 @@ import com.simpleglengine.engine.handler.modifier.ease.EaseBounceOut;
 import com.simpleglengine.engine.handler.modifier.ease.EaseLinear;
 import com.simpleglengine.engine.opengl.Font;
 import com.simpleglengine.engine.opengl.Texture;
+import com.simpleglengine.entity.primitive.Rectangle;
 import com.simpleglengine.entity.scene.Scene;
 import com.simpleglengine.entity.scene.background.AutoParallaxBackground;
 import com.simpleglengine.entity.scene.background.ColorBackground;
 import com.simpleglengine.entity.scene.background.TextureBackground;
+import com.simpleglengine.entity.scene.menu.Menu;
 import com.simpleglengine.entity.sprite.AnimatedSprite;
 import com.simpleglengine.entity.sprite.Sprite;
 import com.simpleglengine.entity.sprite.SpriteBatch;
@@ -89,13 +91,28 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		apb.setTextureBackground(tb2);
 		
 		
-		Sprite mSprite = new Sprite(this.mTexture, -5, -5) {
+		Rectangle rec = new Rectangle(0, 0, 1000, 1000, 0.2f, 0.1f, 0, 0.8f);
+		final Menu menu = new Menu();
+		Text t2 = new Text(mFont, "QUIT MENU", 200, 220) {
 			public boolean onTouch(MotionEvent event) {
-				Log.e("ddd", "sdsdqsdsdqsd");
-				return false;
+				menu.hide();
+				return true;
 			}
 		};
-		mSprite.addEntityModifier(new DoubleValueEntityModifier(2, 200, 200, 0, 0, new EaseBounceOut()));
+		menu.attachChild(rec);
+		menu.attachChild(t2);
+		
+		//menu.setAutoPause(true);
+		
+		scene.setMenu(menu);
+		
+		Sprite mSprite = new Sprite(this.mTexture, 100, 100) {
+			public boolean onTouch(MotionEvent event) {				
+				menu.show();
+				return true;
+			}
+		};
+		//mSprite.addEntityModifier(new DoubleValueEntityModifier(2, 200, 200, 0, 0, new EaseBounceOut()));
 		
 		AnimatedSprite as = new AnimatedSprite(mBirds, 50, 450, 90.0f) {
 			public void onUpdate(float alpha) {
@@ -126,9 +143,9 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 				super.onUpdate(alpha);
 				this.setText("FPS: "+getFPS());
 			}
-			public boolean onTouch(MotionEvent event) {
-				Log.e("ddd", "fps");
-				return false;
+			public boolean onTouch(MotionEvent event) {				
+				menu.hide();
+				return true;
 			}
 		};
 		
@@ -144,7 +161,6 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		apb.setScale(2.0f);
 		as.setScale(2.0f);
 		
-		Log.e("", ""+t.collidesWith(mSprite));
 		
 		return scene;
 	}
