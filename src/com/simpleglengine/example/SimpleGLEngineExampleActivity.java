@@ -7,11 +7,14 @@ import com.simpleglengine.audio.Music;
 import com.simpleglengine.audio.Sound;
 import com.simpleglengine.engine.handler.PhysicsHandler;
 import com.simpleglengine.engine.handler.PhysicsJumpHandler;
+import com.simpleglengine.engine.handler.modifier.ColorEntityModifier;
 import com.simpleglengine.engine.handler.modifier.DoubleValueEntityModifier;
+import com.simpleglengine.engine.handler.modifier.IEntityModifierListener;
 import com.simpleglengine.engine.handler.modifier.ease.EaseBounceOut;
 import com.simpleglengine.engine.handler.modifier.ease.EaseLinear;
 import com.simpleglengine.engine.opengl.Font;
 import com.simpleglengine.engine.opengl.Texture;
+import com.simpleglengine.entity.Shape;
 import com.simpleglengine.entity.primitive.Rectangle;
 import com.simpleglengine.entity.scene.Scene;
 import com.simpleglengine.entity.scene.background.AutoParallaxBackground;
@@ -105,6 +108,27 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		//menu.setAutoPause(true);		
 		scene.setMenu(menu);
 
+		final Rectangle rec2 = new Rectangle(0, 0, 1000, 500, 1.0f, 1.0f, 1.0f, 1.0f);
+		IEntityModifierListener lis = new IEntityModifierListener() {			
+			@Override
+			public void onModifierStarted(Shape shape) {
+				
+			}
+			
+			@Override
+			public void onModifierFinished(Shape shape) {
+				runOnUpdateThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						scene.detachChild(rec2);
+						
+					}
+				});
+			}
+		};
+		rec2.addEntityModifier(new ColorEntityModifier(0.3f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, new EaseLinear(), lis));
+		
 
 		Sprite mSprite = new Sprite(this.mTexture, 100, 100) {
 			private PhysicsJumpHandler jmp;
@@ -169,6 +193,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		scene.attachChild(as);
 		scene.attachChild(t);
 		scene.attachChild(mSprite);
+		scene.attachChild(rec2);
 
 		scene.setScale(4);
 		apb.setScale(2.0f);
