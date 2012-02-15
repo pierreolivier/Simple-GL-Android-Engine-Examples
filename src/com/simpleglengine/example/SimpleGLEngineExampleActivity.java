@@ -14,6 +14,7 @@ import com.simpleglengine.engine.handler.modifier.ease.EaseBounceOut;
 import com.simpleglengine.engine.handler.modifier.ease.EaseLinear;
 import com.simpleglengine.engine.opengl.Font;
 import com.simpleglengine.engine.opengl.Texture;
+import com.simpleglengine.engine.opengl.TextureRegion;
 import com.simpleglengine.entity.Shape;
 import com.simpleglengine.entity.primitive.Rectangle;
 import com.simpleglengine.entity.scene.Scene;
@@ -40,18 +41,40 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	public static final float SPEED = -200.0f;
 
 
-	private Texture mTexture;	
-	private Texture mBackgroundColor;
-	private Texture mBackgroundAnim;	
-	private Texture [] mBirds;	
-	private Texture mBalance;
+	private Texture mTexture;
+	private Texture mTexture2;
+	
+	private TextureRegion mRail1, mRail2;
+	private TextureRegion mTrainTop, mTrain;
+	
+	private TextureRegion mBackgroundColor;
+	private TextureRegion mBackgroundAnim;	
+	private TextureRegion [] mBirds;	
+	private TextureRegion mBalance;
+	
 	private Font mFont;
-
 	private Music mMusic;
 	private Sound mSound;
 
 	@Override
 	public void onLoadRessources() {
+		Bitmap bitmap = BitmapTools.loadBitmapFromRessource(R.drawable.texture);
+		this.mTexture = getTextureManager().loadTextureFromBitmap(bitmap);
+		
+		Bitmap bitmap2 = BitmapTools.loadBitmapFromRessource(R.drawable.texture2);
+		this.mTexture2 = getTextureManager().loadTextureFromBitmap(bitmap2);
+		
+		this.mRail1 = new TextureRegion(mTexture, 700, 291, 316, 345);
+		this.mRail2 = new TextureRegion(mTexture, 408, 1, 316, 280);
+		
+		this.mTrainTop = new TextureRegion(mTexture, 969, 196, 33, 35);
+		this.mTrain = new TextureRegion(mTexture, 875, 193, 29, 34);
+		
+		this.mBackgroundColor = new TextureRegion(mTexture2, 0, 0, 854, 480);
+		this.mBackgroundAnim = new TextureRegion(mTexture2, 0, 512, 1024, 150);
+		
+		this.mBalance = new TextureRegion(mTexture2, 386, 665, 44, 43);
+		/*
 		Bitmap bmp = BitmapTools.loadBitmapFromRessource(R.drawable.heros, Color.rgb(255, 0, 255));		
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bmp);
 
@@ -70,7 +93,9 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 		Bitmap balance = BitmapTools.loadBitmapFromRessource(R.drawable.balance);		
 		this.mBalance = getTextureManager().loadTextureFromBitmap(balance);
-
+		*/
+		
+		
 		try {
 			mMusic = getAudioManager().loadMusic(R.raw.music);
 			mSound = getAudioManager().loadSound(R.raw.perfect);
@@ -88,8 +113,52 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 	@Override
 	public Scene onLoadScene() {
-		final Scene scene = new Scene();
-
+		final Scene scene = new Scene();	
+		
+		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);		
+		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, SPEED);
+		apb.setTextureBackground(tb2);
+		Balance b = new Balance(mBalance, 0, 0);
+		apb.addFollower(b, 1031, 182);
+		
+		Sprite mRail_1 = new Sprite(mRail1, 0, 250);
+		Sprite mRail_2 = new Sprite(mRail2, (int) (mRail_1.getWidth()*1.5f), 250+98);
+		Sprite mTrain_Top = new Sprite(mTrainTop, 300, 100) {
+			private PhysicsJumpHandler jmp;
+			{
+				jmp = new PhysicsJumpHandler(this);
+				jmp.settingWorld(480-4*32-60, 3);
+				jmp.settingJump(0, -650, 0, 2000);
+				this.setPhysicsHandler(jmp);
+			}
+			public boolean onTouch(MotionEvent event) {	
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {			
+					jmp.startJump();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		};
+		mFont.setSize(2);
+		Text t = new Text(mFont, "FPS: "+ 0, 0, 0) {
+			public void onUpdate(float alpha) {
+				super.onUpdate(alpha);
+				this.setText("FPS: "+getFPS());
+			}
+		};
+		
+		scene.setBackground(apb);
+		scene.attachChild(mRail_1);
+		scene.attachChild(mRail_2);
+		scene.attachChild(mTrain_Top);
+		scene.attachChild(t);
+		
+		
+		scene.setScale(1.5f);
+		apb.setScale(2.0f);
+		mTrain_Top.setScale(2.0f);
+		/*
 		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);		
 		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, SPEED);
 		apb.setTextureBackground(tb2);
@@ -199,7 +268,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		apb.setScale(2.0f);
 		as.setScale(2.0f);
 
-
+		*/
 		return scene;
 	}
 

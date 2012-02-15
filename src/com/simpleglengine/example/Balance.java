@@ -4,12 +4,13 @@ import android.util.Log;
 
 import com.simpleglengine.engine.handler.PhysicsHandler;
 import com.simpleglengine.engine.opengl.Texture;
+import com.simpleglengine.engine.opengl.TextureRegion;
 import com.simpleglengine.entity.sprite.Sprite;
 
 public class Balance extends Sprite {
 	PhysicsHandler physicsHandler2;
-	public Balance(Texture texture, int x, int y) {
-		super(texture, x, y);		
+	public Balance(TextureRegion textureRegion, int x, int y) {
+		super(textureRegion, x, y);		
 				
 		this.setRotationCenter(40, 10);
 		
