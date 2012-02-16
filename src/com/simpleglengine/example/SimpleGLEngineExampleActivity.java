@@ -12,10 +12,12 @@ import com.simpleglengine.engine.handler.modifier.DoubleValueEntityModifier;
 import com.simpleglengine.engine.handler.modifier.IEntityModifierListener;
 import com.simpleglengine.engine.handler.modifier.ease.EaseBounceOut;
 import com.simpleglengine.engine.handler.modifier.ease.EaseLinear;
+import com.simpleglengine.engine.opengl.ColorBuffer;
 import com.simpleglengine.engine.opengl.Font;
 import com.simpleglengine.engine.opengl.Texture;
 import com.simpleglengine.engine.opengl.TextureRegion;
 import com.simpleglengine.entity.Shape;
+import com.simpleglengine.entity.primitive.GradientColorRectangle;
 import com.simpleglengine.entity.primitive.Rectangle;
 import com.simpleglengine.entity.scene.Scene;
 import com.simpleglengine.entity.scene.background.AutoParallaxBackground;
@@ -115,9 +117,19 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	public Scene onLoadScene() {
 		final Scene scene = new Scene();	
 		
-		TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);		
+		ColorBuffer colorBuffer = new ColorBuffer();
+		colorBuffer.setColor1(10f/255f, 136f/255f, 165f/255f, 1);
+		colorBuffer.setColor3(10f/255f, 136f/255f, 165f/255f, 1);
+		colorBuffer.setColor2(240f/255f, 1, 1, 1);
+		colorBuffer.setColor4(240f/255f, 1, 1, 1);
+		colorBuffer.generate();
+		GradientColorRectangle gcr = new GradientColorRectangle(0, 0, 854, 200, colorBuffer);
+		
+		//TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);		
 		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, SPEED);
-		apb.setTextureBackground(tb2);
+		apb.setBackground(gcr);
+		
+		apb.setColor(1, 1, 1, 1);
 		Balance b = new Balance(mBalance, 0, 0);
 		apb.addFollower(b, 1031, 182);
 		
@@ -147,13 +159,17 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 				this.setText("FPS: "+getFPS());
 			}
 		};
+		Rectangle rec = new Rectangle(0, 0, 10, 10, 1, 1, 1, 1);
 		
 		scene.setBackground(apb);
 		scene.attachChild(mRail_1);
 		scene.attachChild(mRail_2);
 		scene.attachChild(mTrain_Top);
 		scene.attachChild(t);
+		scene.attachChild(rec);
 		
+		
+		t.setPause(true);
 		
 		scene.setScale(1.5f);
 		apb.setScale(2.0f);
