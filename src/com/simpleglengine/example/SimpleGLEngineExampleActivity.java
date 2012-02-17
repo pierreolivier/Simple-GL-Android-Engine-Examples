@@ -123,9 +123,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		colorBuffer.setColor2(240f/255f, 1, 1, 1);
 		colorBuffer.setColor4(240f/255f, 1, 1, 1);
 		colorBuffer.generate();
-		GradientColorRectangle gcr = new GradientColorRectangle(0, 0, 854, 200, colorBuffer);
-		
-		//TextureBackground tb2 = new TextureBackground(this.mBackgroundColor, 0, 0);		
+		GradientColorRectangle gcr = new GradientColorRectangle(0, 0, 854, 200, colorBuffer);	
 		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, SPEED);
 		apb.setBackground(gcr);
 		
@@ -137,6 +135,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		Sprite mRail_2 = new Sprite(mRail2, (int) (mRail_1.getWidth()*1.5f), 250+98);
 		Sprite mTrain_Top = new Sprite(mTrainTop, 300, 100) {
 			private PhysicsJumpHandler jmp;
+			
 			{
 				jmp = new PhysicsJumpHandler(this);
 				jmp.settingWorld(480-4*32-60, 3);
@@ -154,8 +153,8 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		};
 		mFont.setSize(2);
 		Text t = new Text(mFont, "FPS: "+ 0, 0, 0) {
-			public void onUpdate(float alpha) {
-				super.onUpdate(alpha);
+			public void onManagedUpdate(float alpha) {
+				super.onManagedUpdate(alpha);
 				this.setText("FPS: "+getFPS());
 			}
 		};
