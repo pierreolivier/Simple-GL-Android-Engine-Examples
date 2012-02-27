@@ -45,15 +45,15 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 	private Texture mTexture;
 	private Texture mTexture2;
-	
+
 	private TextureRegion mRail1, mRail2;
 	private TextureRegion mTrainTop, mTrain;
-	
+
 	private TextureRegion mBackgroundColor;
 	private TextureRegion mBackgroundAnim;	
 	private TextureRegion [] mBirds;	
 	private TextureRegion mBalance;
-	
+
 	private Font mFont;
 	private Music mMusic;
 	private Sound mSound;
@@ -62,19 +62,19 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 	public void onLoadRessources() {
 		Bitmap bitmap = BitmapTools.loadBitmapFromRessource(R.drawable.texture);
 		this.mTexture = getTextureManager().loadTextureFromBitmap(bitmap);
-		
+
 		Bitmap bitmap2 = BitmapTools.loadBitmapFromRessource(R.drawable.texture2);
 		this.mTexture2 = getTextureManager().loadTextureFromBitmap(bitmap2);
-		
+
 		this.mRail1 = new TextureRegion(mTexture, 700, 291, 316, 345);
 		this.mRail2 = new TextureRegion(mTexture, 408, 1, 316, 280);
-		
+
 		this.mTrainTop = new TextureRegion(mTexture, 969, 196, 33, 35);
 		this.mTrain = new TextureRegion(mTexture, 875, 193, 29, 34);
-		
+
 		this.mBackgroundColor = new TextureRegion(mTexture2, 0, 0, 854, 480);
 		this.mBackgroundAnim = new TextureRegion(mTexture2, 0, 512, 1024, 150);
-		
+
 		this.mBalance = new TextureRegion(mTexture2, 386, 665, 44, 43);
 		/*
 		Bitmap bmp = BitmapTools.loadBitmapFromRessource(R.drawable.heros, Color.rgb(255, 0, 255));		
@@ -95,9 +95,9 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 		Bitmap balance = BitmapTools.loadBitmapFromRessource(R.drawable.balance);		
 		this.mBalance = getTextureManager().loadTextureFromBitmap(balance);
-		*/
-		
-		
+		 */
+
+
 		try {
 			mMusic = getAudioManager().loadMusic(R.raw.music);
 			mSound = getAudioManager().loadSound(R.raw.perfect);
@@ -115,8 +115,8 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 
 	@Override
 	public Scene onLoadScene() {
-		final Scene scene = new Scene();	
-		
+
+
 		ColorBuffer colorBuffer = new ColorBuffer();
 		colorBuffer.setColor1(10f/255f, 136f/255f, 165f/255f, 1);
 		colorBuffer.setColor3(10f/255f, 136f/255f, 165f/255f, 1);
@@ -125,51 +125,90 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		colorBuffer.generate();
 		GradientColorRectangle gcr = new GradientColorRectangle(0, 0, 854, 200, colorBuffer);	
 		AutoParallaxBackground apb = new AutoParallaxBackground(this.mBackgroundAnim, 180, SPEED);
-		apb.setBackground(gcr);
-		
+		apb.setBackground(gcr);		
 		apb.setColor(1, 1, 1, 1);
 		Balance b = new Balance(mBalance, 0, 0);
 		apb.addFollower(b, 1031, 182);
-		
+
 		Sprite mRail_1 = new Sprite(mRail1, 0, 250);
 		Sprite mRail_2 = new Sprite(mRail2, (int) (mRail_1.getWidth()*1.5f), 250+98);
+
+		final Train mTrain_Top = new Train(mTrainTop, 300, 300);
+		/*
 		Sprite mTrain_Top = new Sprite(mTrainTop, 300, 100) {
 			private PhysicsJumpHandler jmp;
-			
+
 			{
 				jmp = new PhysicsJumpHandler(this);
-				jmp.settingWorld(480-4*32-60, 3);
-				jmp.settingJump(0, -650, 0, 2000);
+				jmp.settingWorld(480-4*32-60, 1);
+				jmp.settingJump(0, -1250, 0, 3500);
+
 				this.setPhysicsHandler(jmp);
 			}
 			public boolean onTouch(MotionEvent event) {	
-				if(event.getAction() == MotionEvent.ACTION_DOWN) {			
+				if (event.getAction() == MotionEvent.ACTION_UP) {
+					jmp.resetYVelocity();
+					Log.e("jmp", "stop");
+					return true;
+				} else if(event.getAction() == MotionEvent.ACTION_DOWN) {			
 					jmp.startJump();
+					Log.e("jmp","start");
 					return true;
 				} else {
 					return false;
 				}
 			}
 		};
+		 */
 		mFont.setSize(2);
 		Text t = new Text(mFont, "FPS: "+ 0, 0, 0) {
 			public void onManagedUpdate(float alpha) {
 				super.onManagedUpdate(alpha);
 				this.setText("FPS: "+getFPS());
 			}
+			public boolean onTouch(MotionEvent event) {
+				if(event.getAction() == MotionEvent.ACTION_DOWN) {
+					Log.e("d", "fps");
+					return true;
+				}
+				return false;
+			}
 		};
 		Rectangle rec = new Rectangle(0, 0, 10, 10, 1, 1, 1, 1);
-		
+
+		final Scene scene = new Scene() {
+			public boolean onTouch(MotionEvent event) {
+				boolean rep = super.onTouch(event);
+				if(!rep) {
+					PhysicsJumpHandler jmp = mTrain_Top.getJmp();
+
+					if (event.getAction() == MotionEvent.ACTION_UP) {
+						if(jmp.getVelocityY() < 0)
+							jmp.resetYVelocity();
+						Log.e("jmp", "stop");
+						return true;
+					} else if(event.getAction() == MotionEvent.ACTION_DOWN) {			
+						jmp.startJump();
+						Log.e("jmp","start");
+						return true;
+					} else {
+						return false;
+					}
+				}
+				return true;
+
+			}
+		};
+
 		scene.setBackground(apb);
 		scene.attachChild(mRail_1);
 		scene.attachChild(mRail_2);
 		scene.attachChild(mTrain_Top);
 		scene.attachChild(t);
-		scene.attachChild(rec);
-		
-		
-		t.setPause(true);
-		
+		//scene.attachChild(rec);
+
+
+
 		scene.setScale(1.5f);
 		apb.setScale(2.0f);
 		mTrain_Top.setScale(2.0f);
@@ -196,23 +235,23 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		IEntityModifierListener lis = new IEntityModifierListener() {			
 			@Override
 			public void onModifierStarted(Shape shape) {
-				
+
 			}
-			
+
 			@Override
 			public void onModifierFinished(Shape shape) {
 				runOnUpdateThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						scene.detachChild(rec2);
-						
+
 					}
 				});
 			}
 		};
 		rec2.addEntityModifier(new ColorEntityModifier(0.3f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, new EaseLinear(), lis));
-		
+
 
 		Sprite mSprite = new Sprite(this.mTexture, 100, 100) {
 			private PhysicsJumpHandler jmp;
@@ -283,7 +322,7 @@ public class SimpleGLEngineExampleActivity extends SimpleGLEngineActivity {
 		apb.setScale(2.0f);
 		as.setScale(2.0f);
 
-		*/
+		 */
 		return scene;
 	}
 

@@ -36,14 +36,15 @@ public final class R {
         public static final int texture=0x7f020016;
         public static final int texture2=0x7f020017;
         public static final int texture2copie=0x7f020018;
-        public static final int train=0x7f020019;
-        public static final int train_top=0x7f02001a;
-        public static final int type1=0x7f02001b;
-        public static final int type2=0x7f02001c;
-        public static final int type3=0x7f02001d;
-        public static final int type4=0x7f02001e;
-        public static final int type5=0x7f02001f;
-        public static final int type6=0x7f020020;
+        public static final int texture2ok=0x7f020019;
+        public static final int train=0x7f02001a;
+        public static final int train_top=0x7f02001b;
+        public static final int type1=0x7f02001c;
+        public static final int type2=0x7f02001d;
+        public static final int type3=0x7f02001e;
+        public static final int type4=0x7f02001f;
+        public static final int type5=0x7f020020;
+        public static final int type6=0x7f020021;
     }
     public static final class layout {
         public static final int main=0x7f030000;
