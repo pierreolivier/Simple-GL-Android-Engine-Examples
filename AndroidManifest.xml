@@ -18,6 +18,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="SpriteExample"></activity>
+        <activity android:name="PhysicsHandlerExample"></activity>
+        <activity android:name="OnManagedUpdateExample"></activity>
+        <activity android:name="OnTouchEventExample"></activity>
+        <activity android:name="AttachExample"></activity>
     </application>
 
 </manifest>
