@@ -23,6 +23,11 @@
         <activity android:name="OnManagedUpdateExample"></activity>
         <activity android:name="OnTouchEventExample"></activity>
         <activity android:name="AttachExample"></activity>
+        <activity android:name="BackgroundExample"></activity>
+        <activity android:name="ModifierExample"></activity>
+        <activity android:name="TextExample"></activity>
+        <activity android:name="MenuExample"></activity>
+        <activity android:name="MusicSoundExample"></activity>
     </application>
 
 </manifest>
